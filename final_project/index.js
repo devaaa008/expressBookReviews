@@ -19,13 +19,13 @@ app.use(
 
 app.use("/customer/auth/*", function auth(req, res, next) {
   //Write the authenication mechanism here
-  if(req.session.username==null){
-    return res.status(403).json({"message":"Forbidden"})
+  if (req.session.username == null) {
+    return res.status(403).json({ message: "Forbidden" });
   }
   next();
 });
 
-const PORT = 5000;
+const PORT = 3000;
 
 app.use("/customer", customer_routes);
 app.use("/", genl_routes);
