@@ -30,4 +30,4 @@ const PORT = 3000;
 app.use("/customer", customer_routes);
 app.use("/", genl_routes);
 
-app.listen(PORT, () => console.log("Server is running"));
+app.listen(process.env.PORT || PORT, () => console.log("Server is running"));
