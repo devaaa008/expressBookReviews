@@ -1,0 +1,149 @@
+openapi: 3.0.0
+info:
+  title: Bookstore API
+  version: 1.0.1
+description: |
+  REST API for managing a bookstore.
+
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: User registered successfully
+        "400":
+          description: Invalid request
+
+  /:
+    get:
+      summary: Get the list of available books
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Books"
+
+  /isbn/{isbn}:
+    get:
+      summary: Get book details based on ISBN
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          description: ISBN of the book
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+
+  /author/{author}:
+    get:
+      summary: Get books based on author
+      parameters:
+        - name: author
+          in: path
+          required: true
+          description: Author name
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BooksByAuthor"
+
+  /title/{title}:
+    get:
+      summary: Get books based on title
+      parameters:
+        - name: title
+          in: path
+          required: true
+          description: Book title
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BooksByTitle"
+
+  /review/{isbn}:
+    get:
+      summary: Get book review
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          description: ISBN of the book
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookReviews"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    Book:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        isbn:
+          type: string
+        reviews:
+          type: object
+
+    Books:
+      type: array
+      items:
+        $ref: "#/components/schemas/Book"
+
+    BooksByAuthor:
+      type: object
+      properties:
+        booksbyauthor:
+          $ref: "#/components/schemas/Books"
+
+    BooksByTitle:
+      type: object
+      properties:
+        booksbytitle:
+          $ref: "#/components/schemas/Books"
+
+    BookReviews:
+      type: object
+      additionalProperties:
+        type: string

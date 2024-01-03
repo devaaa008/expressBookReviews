@@ -3,10 +3,15 @@ const jwt = require("jsonwebtoken");
 const session = require("express-session");
 const customer_routes = require("./router/auth_users.js").authenticated;
 const genl_routes = require("./router/general.js").general;
-
+const yaml = require("yamljs");
+const swaggerUi = require("swagger-ui-express");
 const app = express();
 
 app.use(express.json());
+
+// swagger documentation
+const swaggerDoc = yaml.load("./swagger.yaml");
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.use(
   "/customer",
