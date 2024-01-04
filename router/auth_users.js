@@ -1,17 +1,11 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-let books = require("./booksdb.js");
 const regd_users = express.Router();
 const {
   getCustomerCollection,
   getBooksCollection,
 } = require("../model/database.js");
 
-let users = [
-  { username: "bob", password: "1234" },
-  { username: "marley", password: "12345" },
-];
-const secret = "secretkeyforauthentication";
 const isValid = async (username) => {
   const collection = await getCustomerCollection();
   const users = await collection.find({ username }).toArray();
@@ -43,7 +37,7 @@ regd_users.post("/login", (req, res) => {
   }
 
   if (authenticatedUser(username, password)) {
-    let resp = jwt.sign({ username, password }, secret, { expiresIn: "1h" });
+    // let resp = jwt.sign({ username, password }, secret, { expiresIn: "1h" });
     req.session.username = username;
     return res.status(200).json({ message: "Login successful" });
   }
@@ -73,7 +67,7 @@ regd_users.put("/auth/review/:isbn", async (req, res) => {
       message: "Review Updated successfully for ISBN: " + +req.params.isbn,
     });
   } else {
-    throw new Error("Failed to update review");
+    return res.status(500).json({ error: "Failed to update review." });
   }
 });
 
@@ -93,7 +87,7 @@ regd_users.delete("/auth/review/:isbn", async (req, res) => {
     });
   } else {
     console.log("Failed to delete review");
-    res.status(400);
+    return res.status(500).json({ error: "Failed to delete review." });
   }
 });
 module.exports.authenticated = regd_users;
