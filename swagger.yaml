@@ -6,7 +6,7 @@ description: |
   REST API for managing a bookstore.
 
 paths:
-  /register:
+  /customer/register:
     post:
       summary: Register a new user
       requestBody:
@@ -21,7 +21,7 @@ paths:
         "400":
           description: Invalid request
 
-  /:
+  /books:
     get:
       summary: Get the list of available books
       responses:
@@ -103,6 +103,90 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BookReviews"
+
+  /customer/login:
+    post:
+      summary: User Login
+      description: Logs in a registered user and returns a JWT token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /customer/auth/review/{isbn}:
+    put:
+      summary: Add or Update Book Review
+      description: Adds or updates a book review for the authenticated user.
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          description: ISBN of the book
+          schema:
+            type: string
+        - name: review
+          in: query
+          required: true
+          description: Reviewer's comment
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Review updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+    delete:
+      summary: Delete Book Review
+      description: Deletes the review of the authenticated user for the specified book.
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          description: ISBN of the book
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Review deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
 
 components:
   schemas:

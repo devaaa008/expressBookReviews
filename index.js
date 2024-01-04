@@ -19,11 +19,11 @@ app.use(
     secret: "fingerprint_customer",
     resave: true,
     saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 1000 },
   })
 );
 
 app.use("/customer/auth/*", function auth(req, res, next) {
-  //Write the authenication mechanism here
   if (req.session.username == null) {
     return res.status(403).json({ message: "Forbidden" });
   }
