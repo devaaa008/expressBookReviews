@@ -1,5 +1,4 @@
 const { MongoClient } = require("mongodb");
-const pass = "Devu0380";
 const uri =
   "mongodb+srv://devaaa008:Devu0380@myatlasclusteredu.m9xukns.mongodb.net/?retryWrites=true&w=majority";
 
